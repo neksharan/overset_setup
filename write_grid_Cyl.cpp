@@ -269,7 +269,7 @@ void Read_Grid()
 
 	myFile.close();
 	
-	// WRITE THE GRID TO CHECK IF THE READING WAS CORRECTLY EXECUTER
+	// WRITE THE GRID TO CHECK IF IT READ CORRECTLY
 	/*ofstream outFile;
 	outFile.open ("grid.xyz", ios::out | ios::binary);
 
