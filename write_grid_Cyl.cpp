@@ -27,6 +27,8 @@ class Grid
 		void set_grids(int n,int Npts_x,int Npts_y,const double xmin[],const double xmax[],const double ymin[],const double ymax[]);
 };
 
+void Read_Grid();
+
 void Deallocate_grid_memory(Grid*);
 
 double** Create2DMatrix(int, int);
@@ -38,6 +40,9 @@ void Delete4DMatrix(double****&, int, int, int, int);
 void Delete3DMatrix(double***&, int, int, int);
 void Delete3DMatrix_INT(int***&, int, int, int);
 void Delete2DMatrix(double**&, int, int);
+
+static void swap4(void *);
+static void swap8(void *);
 
 int main()
 {
@@ -180,8 +185,146 @@ int main()
 	printf("Wrote \"%s\" \n", filename);
 	cout << "===============================" << endl;
 	Deallocate_grid_memory(grid);
+	
+	Read_Grid();
+	
 	return 0;
 }
+
+void Read_Grid()
+{
+	double dummy, t;
+	int Nblocks;
+
+	char filename[25];
+	char buf_int[sizeof(int)], buf_double[sizeof(double)];
+	sprintf(filename, "cyl_acoustic_grid.xyz");
+	//sprintf(filename, "full_hill_small_grid1.grd");
+	ifstream myFile;
+	myFile.open (filename, ios::in | ios::binary);
+
+	myFile.seekg(4, ios::cur);
+	myFile.read((char*) &Nblocks, sizeof(int));
+	myFile.seekg(4, ios::cur);
+	cout << Nblocks << endl;
+
+	Grid* gl = new Grid [Nblocks];
+		
+	myFile.seekg(4, ios::cur);
+	for (int i=0;i<Nblocks;i++)
+	{
+		myFile.read((char*) &gl[i].Nx, sizeof(int));
+		myFile.read((char*) &gl[i].Ny, sizeof(int));
+		myFile.read((char*) &gl[i].Nz, sizeof(int));
+
+		cout << gl[i].Nx << endl;
+		cout << gl[i].Ny << endl;
+		cout << gl[i].Nz << endl;
+
+		gl[i].x = Create3DMatrix(gl[i].Nx,gl[i].Ny,gl[i].Nz);
+		gl[i].y = Create3DMatrix(gl[i].Nx,gl[i].Ny,gl[i].Nz);
+		gl[i].z = Create3DMatrix(gl[i].Nx,gl[i].Ny,gl[i].Nz);
+		gl[i].iblank = Create3DMatrix_INT(gl[i].Nx,gl[i].Ny,gl[i].Nz);
+	}
+	myFile.seekg(4, ios::cur);
+
+	for (int ii=0;ii<Nblocks;ii++)
+	{
+		myFile.seekg(4, ios::cur);
+		for (int k=0;k<gl[ii].Nz;++k)
+			for (int j=0;j<gl[ii].Ny;++j)
+				for (int i=0;i<gl[ii].Nx;++i)
+				{
+					myFile.read((char*) &gl[ii].x[i][j][k], sizeof(t));
+					//cout << gl[ii].x[i][j] << endl;
+				}
+
+		for (int k=0;k<gl[ii].Nz;++k)
+			for (int j=0;j<gl[ii].Ny;++j)
+				for (int i=0;i<gl[ii].Nx;++i)
+				{
+					myFile.read((char*) &gl[ii].y[i][j][k], sizeof(t));
+					//cout << gl[ii].y[i][j] << endl;
+				}
+
+		for (int k=0;k<gl[ii].Nz;++k)
+			for (int j=0;j<gl[ii].Ny;++j)
+				for (int i=0;i<gl[ii].Nx;++i)
+				{
+					myFile.read((char*) &gl[ii].z[i][j][k], sizeof(t));
+					//cout << "i = " << i << "    z = " << gl[ii].z[i][j][k] << endl;
+				}
+
+		for (int k=0;k<gl[ii].Nz;++k)
+			for (int j=0;j<gl[ii].Ny;++j)
+				for (int i=0;i<gl[ii].Nx;++i)
+				{
+					myFile.read((char*) &gl[ii].iblank[i][j][k], sizeof(int));
+					//cout << gl[0].iblank[i][j] << endl;
+				}
+
+		myFile.seekg(4, ios::cur);
+
+	}
+
+	myFile.close();
+	
+	// WRITE THE GRID TO CHECK IF THE READING WAS CORRECTLY EXECUTER
+	/*ofstream outFile;
+	outFile.open ("grid.xyz", ios::out | ios::binary);
+
+	int size = 4;
+	outFile.write((char*) &size, sizeof(int));
+	outFile.write((char*) &Nblocks, sizeof(Nblocks));
+	outFile.write((char*) &size, sizeof(int));
+
+	size = 4*Nblocks*3;
+	outFile.write((char*) &size, sizeof(int));
+	for (int i=0;i<Nblocks;i++)
+	{			
+		outFile.write((char*) &gl[i].Nx, sizeof(gl[i].Nx));
+		outFile.write((char*) &gl[i].Ny, sizeof(gl[i].Ny));
+		outFile.write((char*) &gl[i].Nz, sizeof(gl[i].Nz));
+	}
+	outFile.write((char*) &size, sizeof(int));
+
+	for (int ii=0;ii<Nblocks;ii++)
+	{
+		size = 8*3*gl[ii].Nx*gl[ii].Ny*gl[ii].Nz + 4*gl[ii].Nx*gl[ii].Ny*gl[ii].Nz;
+		outFile.write((char*) &size, sizeof(int));
+		for (int k=0;k<gl[ii].Nz;++k)
+			for (int j=0;j<gl[ii].Ny;++j)
+				for (int i=0;i<gl[ii].Nx;++i)
+				{
+					outFile.write((char*) &gl[ii].x[i][j][k], sizeof(gl[ii].x[i][j][k]));
+				}
+
+		for (int k=0;k<gl[ii].Nz;++k)
+			for (int j=0;j<gl[ii].Ny;++j)
+				for (int i=0;i<gl[ii].Nx;++i)
+				{
+					outFile.write((char*) &gl[ii].y[i][j][k], sizeof(gl[ii].y[i][j][k]));
+				}
+
+		for (int k=0;k<gl[ii].Nz;++k)
+			for (int j=0;j<gl[ii].Ny;++j)
+				for (int i=0;i<gl[ii].Nx;++i)
+				{
+					outFile.write((char*) &gl[ii].z[i][j][k], sizeof(gl[ii].z[i][j][k]));
+				}
+
+		for (int k=0;k<gl[ii].Nz;++k)
+			for (int j=0;j<gl[ii].Ny;++j)
+				for (int i=0;i<gl[ii].Nx;++i)
+				{
+					outFile.write((char*) &gl[ii].iblank[i][j][k], sizeof(int));
+				}
+		outFile.write((char*) &size, sizeof(int));
+	}
+
+	outFile.close();*/
+}
+
 
 void Deallocate_grid_memory(Grid* gl)
 {
@@ -337,4 +480,31 @@ void Delete2DMatrix(double**& the_array, int Ni, int Nj)
     delete [] the_array;
 }
 
+// int and float
+static void swap4(void *v)
+{
+    char    in[4], out[4];
+    memcpy(in, v, 4);
+    out[0] = in[3];
+    out[1] = in[2];
+    out[2] = in[1];
+    out[3] = in[0];
+    memcpy(v, out, 4);
+}
+
+// double
+static void swap8(void *v)
+{
+    char    in[8], out[8];
+    memcpy(in, v, 8);
+    out[0] = in[7];
+    out[1] = in[6];
+    out[2] = in[5];
+    out[3] = in[4];
+    out[4] = in[3];
+    out[5] = in[2];
+    out[6] = in[1];
+    out[7] = in[0];
+    memcpy(v, out, 8);
+}
 
