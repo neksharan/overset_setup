@@ -5,7 +5,6 @@ int main()
 {
 
 	int Nblocks = 2;
-	Grid* grid = new Grid [Nblocks];
 
     int Nx_pts[] = {81, 101};
     int Ny_pts[] = {101, 101};
@@ -18,6 +17,8 @@ int main()
     double zs[] = {0.0, 0.0};
     double ze[] = {0.0, 0.0};
 	
+	Grid* grid = new Grid [Nblocks];
+
 	Write_Grid(xs, ys, zs, 
 			   xe, ye, ze, 
 			   Nx_pts, Ny_pts, Nz_pts, 
