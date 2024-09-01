@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <math.h>
-#include<cstring>
+#include <cstring>
 using namespace std;
 
 const int RECORD_DELIMITER_LENGTH = 4;
