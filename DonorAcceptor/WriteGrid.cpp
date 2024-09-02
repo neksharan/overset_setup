@@ -110,8 +110,10 @@ void Write_Grid(const double* xs, const double* ys, const double* zs,
 			for (int j=0;j<grid[ii].Ny;++j)
 				for (int i=0;i<grid[ii].Nx;++i)
 				{
-					if (ii==base_grid_index && grid[ii].x[i][j][k]>=hole_cut.xmin && grid[ii].x[i][j][k]<=hole_cut.xmax 
-						     && grid[ii].y[i][j][k]>=hole_cut.ymin && grid[ii].y[i][j][k]<=hole_cut.ymax)
+					double xval = grid[ii].x[i][j][k];
+					double yval = grid[ii].y[i][j][k];
+					if (ii==base_grid_index && xval>=hole_cut.xmin && xval<=hole_cut.xmax 
+						     && yval>=hole_cut.ymin && yval<=hole_cut.ymax)
 					{	grid[ii].iblank[i][j][k] = 0;		}
 					outFile.write((char*) &grid[ii].iblank[i][j][k], sizeof(int));
 				}
