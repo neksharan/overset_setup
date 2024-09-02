@@ -10,7 +10,6 @@ const double pi = M_PI;
 class Grid
 {
     public:
-		int Nblocks;
         int Nx, Ny, Nz;
         double*** x;
         double*** y;
