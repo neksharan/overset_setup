@@ -10,6 +10,7 @@ const double pi = M_PI;
 class Grid
 {
     public:
+		int Nblocks;
         int Nx, Ny, Nz;
         double*** x;
         double*** y;
@@ -27,9 +28,17 @@ class Grid
         void set_grids(int n,int Npts_x,int Npts_y,const double xmin,const double xmax,const double ymin,const double ymax);
 };
 
-void Read_Grid(std::string filename);
-void Write_Grid(double* xs, double* ys, double* zs,
-                double* xe, double* ye, double* ze,
-                int* Nx_pts, int* Ny_pts, int* Nz_pts, int Nblocks, Grid* grid);
+class HoleCut 
+{
+	public:
+		double xmin, xmax, ymin, ymax, zmin, zmax;
+
+};
+
+void Read_Grid(Grid* gl, int num_blocks, const std::string filename);
+void Write_Grid(const double* xs, const double* ys, const double* zs,
+                const double* xe, const double* ye, const double* ze,
+                const int* Nx_pts, const int* Ny_pts, const int* Nz_pts, 
+				const int Nblocks, int base_grid_index, HoleCut& hole_cut, Grid* grid);
 
 void Deallocate_grid_memory(Grid*);

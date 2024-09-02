@@ -2,9 +2,10 @@
 #include <DataStruct.H>
 using namespace std;
 
-void Write_Grid(double* xs, double* ys, double* zs,
-				double* xe, double* ye, double* ze,
-				int* Nx_pts, int* Ny_pts, int* Nz_pts, int Nblocks, Grid* grid)
+void Write_Grid(const double* xs, const double* ys, const double* zs,
+				const double* xe, const double* ye, const double* ze,
+				const int* Nx_pts, const int* Ny_pts, const int* Nz_pts,
+				const int Nblocks, int base_grid_index, HoleCut& hole_cut, Grid* grid)
 {
 	for (int i=0;i<Nblocks;i++)
 	{
@@ -109,7 +110,8 @@ void Write_Grid(double* xs, double* ys, double* zs,
 			for (int j=0;j<grid[ii].Ny;++j)
 				for (int i=0;i<grid[ii].Nx;++i)
 				{
-					if (ii>0 && grid[ii].x[i][j][k]>=-2.5 && grid[ii].x[i][j][k]<=2.5 && grid[ii].y[i][j][k]>=-2.5 && grid[ii].y[i][j][k]<=2.5)
+					if (ii==base_grid_index && grid[ii].x[i][j][k]>=hole_cut.xmin && grid[ii].x[i][j][k]<=hole_cut.xmax 
+						     && grid[ii].y[i][j][k]>=hole_cut.ymin && grid[ii].y[i][j][k]<=hole_cut.ymax)
 					{	grid[ii].iblank[i][j][k] = 0;		}
 					outFile.write((char*) &grid[ii].iblank[i][j][k], sizeof(int));
 				}
