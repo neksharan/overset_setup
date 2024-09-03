@@ -33,6 +33,13 @@ int main()
 	Grid* grid_read;
 	int num_blocks;
 	Read_Grid(grid_read, num_blocks,"cyl_acoustic_grid.xyz");
-	
+
+	std::cout  << "num_blocks is " << num_blocks << "\n";
+
+	// Make alist of fringe points on both grids - ie points which need interpolation 
+		
+	int fringe_width = 2;
+	FindFringePoints(grid_read, num_blocks, base_grid_index, fringe_width);
+
 	return 0;
 }

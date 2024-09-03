@@ -2,7 +2,7 @@
 #include <DataStruct.H>
 using namespace std;
 
-void Read_Grid(Grid* gl, int num_blocks, const std::string filename)
+void Read_Grid(Grid*& gl, int& num_blocks, const std::string filename)
 {
 	double t;
 	int Nblocks;

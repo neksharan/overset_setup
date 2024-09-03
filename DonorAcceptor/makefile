@@ -8,7 +8,7 @@ CXXFLAGS = -Wall -O2 -I.
 INCLUDES = -I.
 
 # Source files
-SRCS = DataStruct.cpp ReadGrid.cpp WriteGrid.cpp main.cpp
+SRCS = DataStruct.cpp IO.cpp ReadGrid.cpp WriteGrid.cpp FindFringePoints.cpp main.cpp
 
 # Object directory
 OBJDIR = obj
