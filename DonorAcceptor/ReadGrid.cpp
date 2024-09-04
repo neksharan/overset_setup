@@ -2,7 +2,7 @@
 #include <DataStruct.H>
 using namespace std;
 
-void Read_Grid(std::string filename)
+void Read_Grid(Grid*& gl, int& num_blocks, const std::string filename)
 {
 	double t;
 	int Nblocks;
@@ -16,7 +16,8 @@ void Read_Grid(std::string filename)
 	myFile.seekg(4, ios::cur);
 	cout << Nblocks << endl;
 
-	Grid* gl = new Grid [Nblocks];
+	gl = new Grid [Nblocks];
+	num_blocks = Nblocks;
 		
 	myFile.seekg(4, ios::cur);
 	for (int i=0;i<Nblocks;i++)
