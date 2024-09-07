@@ -39,7 +39,7 @@ int main()
 	// Make alist of fringe points on both grids - ie points which need interpolation 
 		
 	int fringe_width = 2;
-	FindFringePoints(grid_read, num_blocks, base_grid_index, fringe_width);
+	FindAcceptorPoints(grid_read, num_blocks, base_grid_index, fringe_width);
 
 	return 0;
 }

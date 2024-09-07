@@ -39,7 +39,6 @@ $(OBJDIR)/%.o: %.cpp | $(OBJDIR)
 
 -include $(DEPS)
 
-
 # Clean up build files
 clean:
 	rm -rf $(OBJDIR) $(EXEC)
