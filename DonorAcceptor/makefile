@@ -2,7 +2,7 @@
 CXX = mpicxx
 
 # Compiler flags
-CXXFLAGS = -Wall -O2 -I.
+CXXFLAGS = -Wall -O2 -I. -MMD -MP
 
 # Include directories (if needed)
 INCLUDES = -I.
@@ -15,6 +15,9 @@ OBJDIR = obj
 
 # Object files (stored in obj directory)
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
+
+# Dependency files (stored in obj directory)
+DEPS = $(OBJS:.o=.d)
 
 # Executable name
 EXEC = overset
@@ -33,6 +36,9 @@ $(EXEC): $(OBJS)
 # Compile each .cpp file into .o and store in obj directory
 $(OBJDIR)/%.o: %.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+-include $(DEPS)
+
 
 # Clean up build files
 clean:
