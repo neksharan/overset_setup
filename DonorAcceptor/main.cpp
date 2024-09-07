@@ -36,10 +36,14 @@ int main()
 
 	std::cout  << "num_blocks is " << num_blocks << "\n";
 
+	ComputeCentroids(grid_read, num_blocks);
+
 	// Make alist of fringe points on both grids - ie points which need interpolation 
 		
 	int fringe_width = 2;
-	FindFringePoints(grid_read, num_blocks, base_grid_index, fringe_width);
+	FindAcceptorPoints(grid_read, num_blocks, base_grid_index, fringe_width);
+
+	//FindDonorPoints(grid_read, num_blocks, base_grid_index);
 
 	return 0;
 }
