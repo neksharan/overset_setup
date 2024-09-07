@@ -41,10 +41,10 @@ void FindAcceptorPoints(Grid*& gl, int num_blocks, int base_grid_index, int frin
 
 	std::cout << imin  << " " << imax << " " << jmin << " " << jmax << "\n";
 
-	std::vector<std::vector<int>>& acceptor_pts_0 = gl[0].acceptors;
-	std::vector<std::vector<int>>& acceptor_pts_1 = gl[1].acceptors;
+	std::vector<std::array<int,3>>& acceptor_pts_0 = gl[0].acceptors;
+	std::vector<std::array<int,3>>& acceptor_pts_1 = gl[1].acceptors;
 
-	std::vector<int> new_point;
+	std::array<int,3> new_point;
 		
 	for (int f=0; f<fw; f++) {
 		for (int i=imin-f;i<=imax+f;i++) {

@@ -8,7 +8,7 @@ CXXFLAGS = -Wall -O2 -I. -MMD -MP
 INCLUDES = -I.
 
 # Source files
-SRCS = DataStruct.cpp IO.cpp ReadGrid.cpp WriteGrid.cpp FindAcceptorPoints.cpp main.cpp
+SRCS = DataStruct.cpp IO.cpp Utils.cpp ReadGrid.cpp WriteGrid.cpp FindAcceptorPoints.cpp FindDonorPoints.cpp main.cpp
 
 # Object directory
 OBJDIR = obj
