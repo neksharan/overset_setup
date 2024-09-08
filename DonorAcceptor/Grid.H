@@ -58,6 +58,10 @@ void ComputeCentroids(Grid*& gl, int num_blocks);
 
 void FindAcceptorPoints(Grid*& gl, int num_blocks, int base_grid_index, int fringe_width);
 void FindDonorPoints(Grid*& gl, int num_blocks, int base_grid_index);
+bool FindDonorsForSinglePoint(Grid*& gl, const int acceptor_grid_id, const int donor_grid_id,
+                              const std::array<int,3>& acceptor_pt, std::array<int,3>& idonor);
+bool does_cell_enclose_point(const double xa,const double ya, const double za,
+                             const Grid& gdon, const std::array<int,3>& cell_to_check);
 void write_vtk_file(Grid*& gl, const int id, const std::vector<std::array<int,3>>& acceptor_pts, std::string base_filename);
 void write_points_vtk(std::vector<std::array<double,3>>& coords, std::string filename);
 // Function to add a vector to the list only if it hasn't been added before
@@ -68,4 +72,40 @@ inline void add_unique(const T1& new_point, T2& vec) {
         vec.push_back(new_point); // Add the vector if it's not found
     }
 }
+
+inline std::array<double,3> ComputeVector(const double x1, const double y1, const double z1,
+                                   const double x2, const double y2, const double z2)
+{
+    double comp0 = x2 - x1;
+    double comp1 = y2 - y1;
+    double comp2 = z2 - z1;
+
+    double norm = 1.0;//std::sqrt(comp0*comp0 + comp1*comp1 + comp2*comp2);
+
+    std::array<double,3> vec;
+    vec[0] = comp0/norm;
+    vec[1] = comp1/norm;
+    vec[2] = comp2/norm;
+
+    return vec;
+}
+
+inline bool is_point_in_box(double x, double y, double z,
+                const double xmin, const double xmax, const double ymin,
+                const double ymax, const double zmin, const double zmax)
+{
+
+    // Shidt the point by a but
+    x = x + 1e-10;
+    y = y + 1e-10;
+    if((x>=xmin and x<=xmax) and
+       (y>=ymin and y<=ymax) and
+       (z>=zmin and z<=zmax)) {
+        return true;
+    }
+
+    return false;
+}
+
+
 void Deallocate_grid_memory(Grid*);

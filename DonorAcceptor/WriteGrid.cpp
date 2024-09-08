@@ -39,8 +39,8 @@ void Write_Grid(const double* xs, const double* ys, const double* zs,
 				for (int j=0;j<grid[ii].Ny;++j)
 					for (int i=0;i<grid[ii].Nx;++i)
 					{				
-						grid[ii].x[i][j][k] = r[i]*cos(theta[j]);			
-						grid[ii].y[i][j][k] = r[i]*sin(theta[j]);
+						grid[ii].x[i][j][k] = 0.011 + r[i]*cos(theta[j]);			
+						grid[ii].y[i][j][k] = 0.021 + r[i]*sin(theta[j]);
 						grid[ii].z[i][j][k] = 0.0;
 						grid[ii].iblank[i][j][k] = 1;
 					}
