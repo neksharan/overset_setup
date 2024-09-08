@@ -2,7 +2,7 @@
 CXX = mpicxx
 
 # Compiler flags
-CXXFLAGS = -Wall -O2 -I. -MMD -MP
+CXXFLAGS = -std=c++11 -Wall -O2 -I. -MMD -MP
 
 # Include directories (if needed)
 INCLUDES = -I.
