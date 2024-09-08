@@ -5,6 +5,7 @@
 #include <cstring>
 #include <vector>
 #include <algorithm>
+#include <array>
 
 const int RECORD_DELIMITER_LENGTH = 4;
 const double pi = M_PI;
