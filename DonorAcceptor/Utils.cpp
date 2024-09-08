@@ -36,5 +36,3 @@ void ComputeCentroids(Grid*& gl, int num_blocks)
 		write_points_vtk(centroids,filename);	
 	}
 }
-
-

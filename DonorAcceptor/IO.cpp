@@ -3,16 +3,16 @@
 #include <iostream>
 using namespace std;
 
-void write_vtk_file(Grid*& gl, const int id, const std::vector<std::array<int,3>>& acceptor_pts, std::string base_filename) {
+void write_vtk_file(Grid*& gl, const int id, const std::vector<std::array<int,3>>& point_indices, std::string base_filename) {
 
     std::string filename = base_filename + "_" + std::to_string(id) + ".vtk";
     std::vector<std::array<double,3>> coords;
 	std::array<double,3> icoords;
-    coords.resize(acceptor_pts.size());
-    for(int pt=0;pt<acceptor_pts.size();pt++){
-        int i = acceptor_pts[pt][0];
-        int j = acceptor_pts[pt][1];
-        int k = acceptor_pts[pt][2];
+    coords.resize(point_indices.size());
+    for(int pt=0;pt<point_indices.size();pt++){
+        int i = point_indices[pt][0];
+        int j = point_indices[pt][1];
+        int k = point_indices[pt][2];
         icoords[0] = gl[id].x[i][j][k];
         icoords[1] = gl[id].y[i][j][k];
         icoords[2] = 1e-12;//gl[id].z[i][j][k];
